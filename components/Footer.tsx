@@ -18,7 +18,7 @@ const Footer = () => {
       {/* Logo and tagline */}
       <div className="relative z-10 flex flex-col items-center text-center">
         <Image src="/logo.svg" alt="Logo" width={35} height={35} className="sm:w-20 w-14 mb-5 " />
-        <Link href="https://github.com/akncodes/Intervue" >
+        <Link href="https://github.com/akncodes/IntervueAi" >
         < Github />
         </Link>
         <p className="sm:text-3xl mt-4 text-lg text-purple-200 font-medium">
