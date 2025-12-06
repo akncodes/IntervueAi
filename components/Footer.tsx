@@ -23,8 +23,8 @@ const Footer = () => {
         </Link>
         <p className="sm:text-3xl mt-4 text-lg text-purple-200 font-medium">
           Your Gateway to Smarter Interview Preparation!
-        </p>
-      </div>
+          </p>
+        </div>
 
 
       {/* Divider */}
@@ -33,9 +33,9 @@ const Footer = () => {
       {/* Bottom row */}
       <div className="mt-4 px-6 flex flex-col md:flex-row items-center justify-between text-sm text-gray-600">
         <div className="flex gap-4 mb-2 md:mb-0">
-        <Link href="https://www.linkedin.com/in/abhishekganvir/" className="hover:underline">LinkedIn</Link>
-          <Link href="https://github.com/AbhishekGanvir" className="hover:underline">GitHub</Link>
-          <Link href="mailto:abhishekganvirr@gmail.com" className="hover:underline">Contact Us</Link>
+        <Link href="https://www.linkedin.com/in/ak-nigam/" className="hover:underline">LinkedIn</Link>
+          <Link href="https://github.com/akncodes" className="hover:underline">GitHub</Link>
+          <Link href="mailto:imabhishek40@gmail.com" className="hover:underline">Contact Us</Link>
         </div>
         <div>
         {year && <>Copyright © {year} | <span className="font-semibold">IntervueAI</span></>}
