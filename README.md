@@ -1,101 +1,157 @@
+# 🤖 IntervueAI — Precision in Recruitment
 
-# 🤖 IntervueAI - Precision in Recruitment 
 ![intervueai](https://github.com/user-attachments/assets/d26c8001-18ba-4777-bcd9-f80c479f3557)
 
-
-
-
 ## 🌟 Overview
-The **IntervueAI** is a next-gen AI-powered mock interview platform built to help students and professionals prepare for interviews in a way that actually feels real. It goes beyond generic questions using your resume, job role, and round type to generate personalized, industry-relevant interviews.
+**IntervueAI** is a premium, next-generation AI-powered mock interview platform designed to help students and professionals prepare for technical and behavioral interviews in a hyper-realistic environment. 
 
-  What makes IntervueAI special is its ability to give smart, AI-generated feedback after each session including performance insights, improvement tips, and evaluation reports so you’re not just practicing, you’re leveling up.
+By eliminating static form-based templates, IntervueAI provides a **voice-first, natural interface** where candidates speak directly to Chloe, their virtual AI Recruiter. Built to replicate high-stakes corporate screening procedures, the platform generates personalized, resume-aligned questions, manages a secure live-stream peer panel using peer-to-peer WebRTC connections, and delivers comprehensive, structured evaluation reports in real-time.
 
-## ✨ Features
-- 🔐 **User Authentication**
-  - Sign Up and Sign In using password/email authentication handled by Firebase.
+---
 
-- 🎛️ **Interactive Dashboard**
-  - Provides an intuitive interface for managing interview preparations.
-    
-- 🧑‍💻 **No Form-Based Flow**
-  - Say goodbye to static input forms just log in, speak, and start your interview. It's natural, voice-first interaction from the start.
+## 🏗️ Architecture & Data Flow
 
-- 🤖 **AI-Powered Interview Generation**
-  - Personalized mock interviews based on your resume, job role, and round type using Vapi voice assistants and Google Gemini.
+Below is the conceptual architecture of how the frontend UI, custom signaling gateway, external AI APIs, and workflows integrate:
 
+```mermaid
+graph TD
+    subgraph Client ["Client Side (Next.js - Port 3000)"]
+        A["Dashboard & Interview Setup"] --> B["GetInterview Dashboard"]
+        B <--> C["VideoInterviewPanel (WebRTC)"]
+        B <--> D["Voice Dictation & Synthesis (Speech API)"]
+    end
 
-- 🧠 **Digital AI Interviewers**
-  - Interact with intelligent AI personas inspired by iconic digital characters, making practice more immersive and less robotic.
+    subgraph Server ["Signaling Server (Express & WS - Port 3001)"]
+        E["WebSocket Hub"] <-->|"ICE / SDP Signaling Relay"| C
+        F["Express REST Router"] <-->|"Proxy /generate"| G["n8n Workflow Engine"]
+    end
 
-- 📝 **Real-Time Transcription**
-  - Get instant AI-generated feedback after each session, including ratings, improvement tips, and evaluation summaries.
+    subgraph Integrations ["Cloud Services & AI Engines"]
+        G <--> H["Google Gemini / LLM Engine"]
+        B <--> I["Firebase Auth & Client DB"]
+        B <--> J["Vapi AI Voice Assistant"]
+    end
+```
 
+---
 
+## ✨ Key Features
+
+### 1. 📹 Interactive Video Assessment (WebRTC)
+- **Live Peer Streams**: Real-time simulated peer-feed integration using a peer-to-peer WebRTC architecture.
+- **Dynamic Control Hub**: Candidates can easily toggle camera (`Video`) and microphone (`Mic`) inputs directly within the feed container.
+- **Resilient Signaling**: Custom Express-based WebSocket connection relaying Session Description Protocol (SDP) offers, answers, and ICE candidates dynamically.
+- **Intelligent Error States**: Automatic server health checks and offline troubleshooting instructions in the client grid to guide developers.
+
+### 2. 🗣️ Hands-Free Voice-First Interview Engine
+- **Voice Dictation**: Uses continuous Web Speech Recognition (`webkitSpeechRecognition`) to let candidates naturally vocalize their responses.
+- **Speech Synthesis**: Interactive Text-to-Speech (TTS) engine that reads questions out loud using natural, optimized English voice personas.
+- **Interactive Recruiter Avatar**: Animated wave states and mic indicators that pulse synchronously with Chloe's speech and listening statuses.
+
+### 3. 🤖 Resume-Tailored AI Generation
+- **Targeted Questioning**: Creates customized, domain-specific interview sets based on user level (Junior, Mid, Senior), candidate tech stack, and interview types (Technical, Behavioral, HR).
+- **LLM-Powered Orchestration**: Orchestrated by a powerful **n8n workflow pipeline** proxying backend queries to **Google Gemini**.
+
+### 4. 📝 Real-Time Interactive Grading Reports
+- **Detailed Evaluation Sheets**: Instant grading reports compiling scores, detailed strengths, and tailored growth metrics at the conclusion of each session.
+
+### 5. 🔐 Robust Security & Auth
+- **Firebase Core Auth**: Secure password/email authentication flow.
+- **Firebase Admin SDK**: Safe database writing and administrative functions.
+
+---
 
 ## 🛠️ Tech Stack
-- ⚛ **Next.js**
-- 🔥 **Firebase**
-- 🎨 **Tailwind CSS**
-- 🗣️ **Vapi AI**
-- 🧩 **shadcn/ui**
-- 🧠 **Google Gemini**
 
+* **Frontend**: Next.js 16 (App Router), React 19, Tailwind CSS, Lucide Icons, Shadcn/UI, LiveKit Client.
+* **Backend**: Node.js, Express, WebSocket (`ws`), TypeScript, `tsx`.
+* **Database & Auth**: Firebase Auth, Firebase Admin SDK.
+* **AI Pipelines**: Google Gemini (`@ai-sdk/google`), Vapi AI, n8n automation webhook.
 
-## <a name="quick-start">🤸 Quick Start</a>
+---
+
+## 🤸 Quick Start
 
 Follow these steps to set up the project locally on your machine.
 
+### 1. Clone & Install Dependencies
 
-**Installation**
-
-Install the project dependencies using npm:
-
+**Install Frontend Dependencies (Root Folder):**
 ```bash
 npm install
 ```
 
-**Set Up Environment Variables**
-
-Create a new file named `.env.local` in the root of your project and add the following content:
-
-```env
-NEXT_PUBLIC_VAPI_WEB_TOKEN=
-NEXT_PUBLIC_VAPI_WORKFLOW_ID=
-
-GOOGLE_GENERATIVE_AI_API_KEY=
-
-NEXT_PUBLIC_BASE_URL=
-
-NEXT_PUBLIC_FIREBASE_API_KEY=
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
-NEXT_PUBLIC_FIREBASE_APP_ID=
-
-FIREBASE_PROJECT_ID=
-FIREBASE_CLIENT_EMAIL=
-FIREBASE_PRIVATE_KEY=
+**Install Backend Dependencies (Backend Folder):**
+```bash
+cd backend
+npm install
+cd ..
 ```
 
-Replace the placeholder values with your actual **[Firebase](https://firebase.google.com/)**, **[Vapi](https://vapi.ai/?utm_source=youtube&utm_medium=video&utm_campaign=jsmastery_recruitingpractice&utm_content=paid_partner&utm_term=recruitingpractice)** credentials.
+---
 
-**Running the Project**
+### 2. Set Up Environment Variables
 
+#### Root Frontend `.env.local`
+Create a `.env.local` file in the root directory and append the following credentials:
+```env
+NEXT_PUBLIC_VAPI_WEB_TOKEN=your_vapi_token
+NEXT_PUBLIC_VAPI_WORKFLOW_ID=your_vapi_workflow_id
+
+GOOGLE_GENERATIVE_AI_API_KEY=your_google_gemini_key
+
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+NEXT_PUBLIC_WS_URL=ws://localhost:3001
+
+NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_bucket_id
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+
+FIREBASE_PROJECT_ID=your_firebase_project_id
+FIREBASE_CLIENT_EMAIL=your_firebase_client_email
+FIREBASE_PRIVATE_KEY=your_firebase_private_key
+```
+
+#### Backend `.env`
+Create a `.env` file in the `/backend` directory:
+```env
+PORT=3001
+N8N_WEBHOOK_URL=http://localhost:5678/webhook-test/generate-interview
+```
+
+---
+
+### 3. Running the Project Locally
+
+To run IntervueAI, you must spin up both the Next.js frontend client and the Express signaling server.
+
+#### A. Start the Backend Server (Signaling Gateway)
+```bash
+cd backend
+npm run dev
+```
+*The signaling gateway will spin up on `ws://localhost:3001`.*
+
+#### B. Start the Frontend Client (Next.js Application)
+Open a new terminal at the root directory and run:
 ```bash
 npm run dev
 ```
+*The client-side UI will start at [http://localhost:3000](http://localhost:3000).*
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the project.
+---
 
 ## 🤝 Contributions
-This project is **open-source forever!** Contributions are welcome. Feel free to:
-- 🎨 Improve UI/UX
-- 🧠 Optimize AI algorithms
-- 🗄️ Enhance database efficiency
-- 🚀 Add new features
 
-Fork the repository, make changes, and submit a **pull request**!
+Contributions are welcome! Please feel free to open a Pull Request or issue if you'd like to:
+- 🎨 Enhance the Glassmorphism styling and UI micro-interactions.
+- 🧠 Optimize WebRTC peer candidate negotiation speeds.
+- 🚀 Integrate custom postures or speech analytics feedback.
+
+---
 
 ## 📜 License
 This project is licensed under the **MIT License**.
@@ -103,5 +159,3 @@ This project is licensed under the **MIT License**.
 ---
 
 ### **🎉 Happy Coding & Best of Luck for Your Interviews! 🚀**
-# Intervue
-# Intervue
