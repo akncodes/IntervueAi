@@ -1,4 +1,6 @@
 import express from "express";
+import http from "http";
+import { WebSocketServer, WebSocket } from "ws";
 import cors from "cors";
 import dotenv from "dotenv";
 
@@ -10,6 +12,61 @@ const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL || "https://n8n-production-7
 
 app.use(cors());
 app.use(express.json());
+
+// Create standard HTTP server
+const server = http.createServer(app);
+
+// Initialize WebSocket server
+const wss = new WebSocketServer({ server });
+
+// Track active clients in rooms
+const activeRooms = new Map<string, Set<WebSocket>>();
+
+wss.on("connection", (ws) => {
+  let userRoom: string | null = null;
+
+  ws.on("message", (message: string) => {
+    try {
+      const data = JSON.parse(message);
+
+      switch (data.type) {
+        case "join-room":
+          userRoom = data.roomId;
+          if (!activeRooms.has(userRoom!)) {
+            activeRooms.set(userRoom!, new Set());
+          }
+          activeRooms.get(userRoom!)?.add(ws);
+          console.log(`[WS] Peer joined room: ${userRoom}`);
+          break;
+
+        case "offer":
+        case "answer":
+        case "ice-candidate":
+          // Relay media negotiation message to other peers in the room
+          if (userRoom && activeRooms.has(userRoom)) {
+            activeRooms.get(userRoom)?.forEach((client) => {
+              if (client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify(data));
+              }
+            });
+          }
+          break;
+      }
+    } catch (err) {
+      console.error("[WS] Error parsing message:", err);
+    }
+  });
+
+  ws.on("close", () => {
+    if (userRoom && activeRooms.has(userRoom)) {
+      activeRooms.get(userRoom)?.delete(ws);
+      if (activeRooms.get(userRoom)?.size === 0) {
+        activeRooms.delete(userRoom);
+      }
+      console.log(`[WS] Peer left room: ${userRoom}`);
+    }
+  });
+});
 
 // Logging middleware
 app.use((req, res, next) => {
@@ -70,7 +127,8 @@ app.post("/generate", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 IntervueAI Express Middleware listening on port ${PORT}`);
+// Listen using the combined HTTP / WebSocket server
+server.listen(PORT, () => {
+  console.log(`🚀 IntervueAI Express & WS Server listening on port ${PORT}`);
   console.log(`🔗 Proxying generation requests to: ${N8N_WEBHOOK_URL}`);
 });

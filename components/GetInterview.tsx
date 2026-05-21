@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState, useRef } from 'react';
 import Loading from './Loading';
+import { VideoInterviewPanel } from './VideoInterviewPanel';
 
 interface SavedMessage {
   role: 'user' | 'system' | 'assistant';
@@ -22,6 +23,7 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
   const [isRecording, setIsRecording] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showVideo, setShowVideo] = useState(true);
 
   // References for speech
   const recognitionRef = useRef<any>(null);
@@ -234,6 +236,31 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
           ❌ {errorMessage}
         </div>
       )}
+
+      {/* Video Panel Toggle Control Header */}
+      <div className="flex justify-between items-center mb-6 bg-dark-300 border border-dark-100/50 p-4 rounded-xl glassmorphism">
+        <div className="flex items-center gap-3">
+          <span className="text-xl">📹</span>
+          <div>
+            <h4 className="text-sm font-bold text-white">Interactive Video Assessment</h4>
+            <p className="text-[11px] text-gray-500 font-mono">Stream simulated peer feeds & track candidate posture</p>
+          </div>
+        </div>
+        <button
+          onClick={() => setShowVideo(!showVideo)}
+          className={cn(
+            "px-4 py-2 text-xs font-bold rounded-lg border transition-all duration-200 cursor-pointer",
+            showVideo
+              ? "bg-emerald-950/30 text-emerald-400 border-emerald-500/30 hover:bg-emerald-900/40"
+              : "bg-dark-200 text-gray-400 border-dark-100 hover:text-white hover:bg-dark-100"
+          )}
+        >
+          {showVideo ? "Hide Video Feed" : "Show Video Feed"}
+        </button>
+      </div>
+
+      {/* Conditionally render WebRTC Video Grid */}
+      {showVideo && <VideoInterviewPanel roomId={interviewId || "default-session"} />}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
