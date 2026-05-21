@@ -5,13 +5,13 @@ import { getAuth,GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDVsatZJigPzBBPN1Al-ooeHuXJ1u97lHQ",
-  authDomain: "intervu-2373c.firebaseapp.com",
-  projectId: "intervu-2373c",
-  storageBucket: "intervu-2373c.firebasestorage.app",
-  messagingSenderId: "776111970968",
-  appId: "1:776111970968:web:9d6ef09d3bf25135138eed",
-  measurementId: "G-H17G5T7TH6"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyDVsatZJigPzBBPN1Al-ooeHuXJ1u97lHQ",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "intervu-2373c.firebaseapp.com",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "intervu-2373c",
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "intervu-2373c.firebasestorage.app",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "776111970968",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:776111970968:web:9d6ef09d3bf25135138eed",
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "G-H17G5T7TH6"
 };
 const app = !getApps.length ?  initializeApp(firebaseConfig) : getApp();
 

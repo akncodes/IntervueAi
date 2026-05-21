@@ -3,7 +3,7 @@ import { google } from "@ai-sdk/google";
 
 
 import { getRandomInterviewCover } from "@/lib/utils";
-import { db } from "@/firebass/admin";
+import { getAdminDb } from "@/firebass/admin";
 
 export async function GET() {
     return Response.json({ success: true, data: 'THANK YOU!'}, {status:200});
@@ -11,10 +11,11 @@ export async function GET() {
 
 export async function POST(request: Request){
     const { type, role , level, techstack, amount, profile, userid } = await request.json();
+    const db = getAdminDb();
     
     try {
         const { text: questions } = await generateText({
-          model: google("gemini-2.0-flash-001"),
+          model: google("gemini-2.5-flash"),
           prompt: `Prepare questions for a job interview.
             The job role is ${role}.
             The job experience level is ${level}.

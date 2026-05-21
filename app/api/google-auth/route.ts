@@ -1,10 +1,11 @@
 // app/api/google-auth/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/firebass/admin";
+import { getAdminDb } from "@/firebass/admin";
 import { setSessionCookie } from "@/lib/actions/auth.action";
 
 export async function POST(req: NextRequest) {
   try {
+    const db = getAdminDb();
     const { uid, name, email, idToken } = await req.json();
 
     // Check if user exists in Firestore

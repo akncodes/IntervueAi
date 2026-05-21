@@ -1,12 +1,13 @@
 "use server";
 
 import { feedbackSchema } from "@/constants";
-import { db } from "@/firebass/admin";
+import { getAdminDb } from "@/firebass/admin";
 import { google } from "@ai-sdk/google";
-import { generateObject } from "ai";
+import { generateObject, generateText } from "ai";
 
 export async function getInterviewByUserId(userId: string): Promise<Interview[] | null> {
     try {
+    const db = getAdminDb();
         const Interviews = await db.collection('interviews')
         .where('userId', '==', userId)
         .orderBy('createdAt','desc')
@@ -28,6 +29,8 @@ const { userId ,
     // limit = 20
  } = params
 
+  const db = getAdminDb();
+
     const Interviews = await db.collection('interviews')
     .orderBy('createdAt','desc')
     .where('finalized', '==', true)
@@ -39,6 +42,7 @@ const { userId ,
 } 
 
 export async function getInterviewById(id: string): Promise<Interview | null> {
+  const db = getAdminDb();
     const Interview = await db.collection('interviews')
     .doc(id)
     .get();
@@ -48,6 +52,7 @@ export async function getInterviewById(id: string): Promise<Interview | null> {
 
 export async function createFeedback(params: CreateFeedbackParams) {
     const { interviewId, userId, transcript, feedbackId } = params;
+  const db = getAdminDb();
   
     try {
       const formattedTranscript = transcript
@@ -58,7 +63,7 @@ export async function createFeedback(params: CreateFeedbackParams) {
         .join("");
   
       const { object } = await generateObject({
-        model: google("gemini-2.0-flash-001", {
+        model: google("gemini-2.5-flash", {
           structuredOutputs: false,
         }),
         schema: feedbackSchema,
@@ -111,6 +116,7 @@ export async function createFeedback(params: CreateFeedbackParams) {
     params: GetFeedbackByInterviewIdParams
   ): Promise<Feedback | null> {
     const { interviewId, userId } = params;
+    const db = getAdminDb();
   
     const querySnapshot = await db
       .collection("feedback")
@@ -124,3 +130,112 @@ export async function createFeedback(params: CreateFeedbackParams) {
     const feedbackDoc = querySnapshot.docs[0];
     return { id: feedbackDoc.id, ...feedbackDoc.data() } as Feedback;
   }
+
+  export async function createInterview(params: {
+    role: string;
+    type: string;
+    level: string;
+    profile: string;
+    techstack: string[];
+    questions: string[];
+    userId: string;
+  }) {
+    const { role, type, level, profile, techstack, questions, userId } = params;
+    const db = getAdminDb();
+    
+    try {
+      const { getRandomInterviewCover } = await import("@/lib/utils");
+      
+      const interview = {
+        role: role,
+        type: type,
+        level: level,
+        profile: profile,
+        techstack: techstack,
+        questions: questions,
+        userId: userId,
+        finalized: true,
+        coverImage: getRandomInterviewCover(),
+        createdAt: new Date().toISOString(),
+      };
+
+      const interviewRef = await db.collection("interviews").add(interview);
+      return { success: true, id: interviewRef.id };
+    } catch (error: any) {
+      console.error("Error creating interview in Firestore:", error);
+      return { success: false, error: error?.message || "Failed to create interview" };
+    }
+  }
+
+  export async function proxyGenerateInterview(params: {
+    role: string;
+    level: string;
+    techstack: string;
+    amount: number;
+    type: string;
+    profile: string;
+  }) {
+    const { role, level, techstack, amount, type, profile } = params;
+    const n8nUrl = "https://n8n-production-7cbf9.up.railway.app/webhook-test/generate-interview";
+
+    try {
+      const response = await fetch(n8nUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          role,
+          level,
+          techstack,
+          amount,
+          type,
+          profile: profile || "Not provided.",
+        }),
+      });
+
+      if (!response.ok) {
+        let errMsg = `n8n error ${response.status}`;
+        try {
+          const e = await response.json();
+          if (e?.message) errMsg = e.message;
+        } catch (_) {}
+        throw new Error(errMsg);
+      }
+
+      const data = await response.json();
+
+      // Detect if n8n returned an unevaluated expression (its internal HTTP node failed)
+      const questionsRaw = data?.questions ?? data?.data?.questions ?? "";
+      if (typeof questionsRaw === "string" && questionsRaw.includes("{{")) {
+        throw new Error("n8n workflow internal error: Gemini HTTP node did not execute. Fix the URL and API key in the n8n HTTP Request node.");
+      }
+
+      return { success: true, data };
+    } catch (error: any) {
+      console.error("n8n webhook failed, falling back to direct Gemini:", error?.message);
+
+      // ── Fallback: call Gemini directly ──────────────────────────────────
+      try {
+        const prompt = `Generate ${amount} interview questions for ${role} at ${level} level with ${techstack} tech stack.
+The focus between behavioural and technical questions should lean towards: ${type}.
+The user's profile/resume: ${profile || "Not provided."}.
+Please return ONLY the questions as a valid JSON array of strings, with no extra text, no markdown, no code blocks.
+Example format: ["Question 1?", "Question 2?", "Question 3?"]
+The questions will be read by a voice assistant so do not use "/" or "*" or any special characters that might break speech.`;
+
+        const { text } = await generateText({
+          model: google("gemini-2.5-flash"),
+          prompt,
+        });
+
+        let cleaned = text.trim();
+        if (cleaned.startsWith("```")) {
+          cleaned = cleaned.replace(/```json|```/g, "").trim();
+        }
+
+        return { success: true, data: { success: true, questions: cleaned } };
+      } catch (geminiError: any) {
+        console.error("Gemini fallback also failed:", geminiError?.message);
+        return { success: false, error: geminiError?.message || "Failed to generate questions." };
+      }
+    }
+  }

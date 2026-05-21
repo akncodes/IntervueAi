@@ -1,5 +1,5 @@
 'use server';
-import { auth, db } from "@/firebass/admin";
+import { getAdminAuth, getAdminDb } from "@/firebass/admin";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 const TWO_WEEKS = 60 * 60 * 24 * 14;
@@ -7,6 +7,7 @@ const TWO_WEEKS = 60 * 60 * 24 * 14;
 export async function signUp(params: SignUpParams){
     const { uid, name, email } = params;
     try{
+            const db = getAdminDb();
       const userRecord = await db.collection('users').doc(uid).get();
       if (userRecord.exists){
         return {
@@ -36,6 +37,7 @@ export async function signUp(params: SignUpParams){
 export async function signIn(params: SignInParams){
     const { email, idToken} = params;
     try {
+        const auth = getAdminAuth();
         const userRecord = await auth.getUserByEmail(email);
         if(!userRecord){
             return{
@@ -51,6 +53,7 @@ export async function signIn(params: SignInParams){
 
 export async function setSessionCookie(idToken: string){
     const cookieStore = await cookies();
+    const auth = getAdminAuth();
 
     const sessionCookie = await auth.createSessionCookie(idToken, {expiresIn: TWO_WEEKS   * 1000 });
 
@@ -69,6 +72,8 @@ export async function getCurrentUser(): Promise<User | null> {
 
     if(!sessionCookie) return null;
     try {
+        const auth = getAdminAuth();
+        const db = getAdminDb();
         const decodedClaims = await auth.verifySessionCookie(sessionCookie, true);
 
         const userRecord = await db. collection('users')
