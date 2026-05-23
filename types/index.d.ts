@@ -11,6 +11,15 @@ interface Feedback {
   areasForImprovement: string[];
   finalAssessment: string;
   createdAt: string;
+  codeReview?: {
+    writtenCode: string;
+    language: string;
+    timeComplexity: string;
+    spaceComplexity: string;
+    bugsFound: string[];
+    critique: string;
+    refactoredCode: string;
+  };
 }
 
 interface Interview {
@@ -30,6 +39,8 @@ interface CreateFeedbackParams {
   userId: string;
   transcript: { role: string; content: string }[];
   feedbackId?: string;
+  code?: string;
+  language?: string;
 }
 
 interface User {

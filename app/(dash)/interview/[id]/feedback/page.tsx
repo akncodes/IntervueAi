@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import BackToDashboardButton from "@/components/BackToDashboardButton";
 import RetakeInterviewButton from "@/components/RetakeInterviewButton";
+import { FeedbackCodeReview } from "@/components/FeedbackCodeReview";
 
 const Feedback = async ({ params }: RouteParams) => {
   const { id } = await params;
@@ -62,6 +63,11 @@ const Feedback = async ({ params }: RouteParams) => {
       <hr />
 
       <p>{feedback?.finalAssessment}</p>
+
+      {/* Dynamic split-pane AI coding review if codeReview data exists */}
+      {feedback?.codeReview && (
+        <FeedbackCodeReview codeReview={feedback.codeReview as any} />
+      )}
 
       {/* Interview Breakdown */}
       <div className="flex flex-col gap-4">

@@ -51,8 +51,8 @@ export async function getInterviewById(id: string): Promise<Interview | null> {
 } 
 
 export async function createFeedback(params: CreateFeedbackParams) {
-    const { interviewId, userId, transcript, feedbackId } = params;
-  const db = getAdminDb();
+    const { interviewId, userId, transcript, feedbackId, code, language } = params;
+    const db = getAdminDb();
   
     try {
       const formattedTranscript = transcript
@@ -62,6 +62,20 @@ export async function createFeedback(params: CreateFeedbackParams) {
         )
         .join("");
   
+      let codingContext = "";
+      if (code && code.trim().length > 0) {
+        codingContext = `
+          The candidate also submitted a coding solution in the interactive editor:
+          Language: ${language || "javascript"}
+          Submitted Code:
+          \`\`\`${language || "javascript"}
+          ${code}
+          \`\`\`
+          
+          Your evaluation MUST include a thorough review of this code. Critique its algorithms, syntax, edge-case coverage, and complexity. Provide an optimized, refactored solution.
+        `;
+      }
+
       const { object } = await generateObject({
         model: google("gemini-2.5-flash", {
           structuredOutputs: false,
@@ -71,6 +85,8 @@ export async function createFeedback(params: CreateFeedbackParams) {
           You are an AI interviewer analyzing a mock interview. Your task is to evaluate the candidate based on structured categories. Be thorough and detailed in your analysis. Don't be lenient with the candidate. If there are mistakes or areas for improvement, point them out.
           Transcript:
           ${formattedTranscript}
+          
+          ${codingContext}
   
           Please score the candidate from 0 to 100 in the following areas. Do not add categories other than the ones provided:
           - **Communication Skills**: Clarity, articulation, structured responses.
@@ -78,6 +94,8 @@ export async function createFeedback(params: CreateFeedbackParams) {
           - **Problem-Solving**: Ability to analyze problems and propose solutions.
           - **Cultural & Role Fit**: Alignment with company values and job role.
           - **Confidence & Clarity**: Confidence in responses, engagement, and clarity.
+
+          If code was submitted, ensure you fully populate the "codeReview" object containing the candidate's time/space complexities, found bugs/warnings list, detailed critique paragraph, and your full optimized refactoredCode string. If no code was submitted, omit the "codeReview" object entirely.
           `,
         system:
           "You are a professional interviewer analyzing a mock interview. Your task is to evaluate the candidate based on structured categories",
@@ -92,6 +110,7 @@ export async function createFeedback(params: CreateFeedbackParams) {
         areasForImprovement: object.areasForImprovement,
         finalAssessment: object.finalAssessment,
         createdAt: new Date().toISOString(),
+        ...(object.codeReview ? { codeReview: object.codeReview } : {})
       };
   
       let feedbackRef;

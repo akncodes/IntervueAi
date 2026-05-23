@@ -35,6 +35,98 @@ graph TD
 
 ---
 
+## ⚡ Real-Time WebSockets & WebRTC Signaling Blueprint
+
+In a WebRTC environment, media data flows directly between candidate and peer browsers (peer-to-peer). However, to establish this peer-to-peer channel, the participants must exchange connection metadata (SDP offers, answers, and ICE candidates) through a server. This process is called **Signaling**, and **WebSockets** are the perfect vehicle for this low-latency transaction.
+
+### 🔄 Signaling Sequence Flow
+Below is the signaling sequence executed by IntervueAI when initiating an interactive WebRTC video session:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Candidate (Next.js)
+    actor Interviewer as AI/Interviewer
+    participant Sig as Express WS Signaling Server (Port 3001)
+
+    User->>Sig: Establish WebSocket Connection
+    Interviewer->>Sig: Establish WebSocket Connection
+    
+    rect rgb(20, 30, 25)
+        note right of User: Step 1: Media Negotiation
+        User->>Sig: Send "SDP Offer" (I want to stream video/audio)
+        Sig->>Interviewer: Relay "SDP Offer"
+        Interviewer->>Sig: Send "SDP Answer" (I accept, here is my stream)
+        Sig->>User: Relay "SDP Answer"
+    end
+
+    rect rgb(25, 20, 20)
+        note right of User: Step 2: Network Pathfinding (ICE Candidates)
+        User->>Sig: Send ICE Candidate (My network path options)
+        Sig->>Interviewer: Relay ICE Candidate
+        Interviewer->>Sig: Send ICE Candidate (My path options)
+        Sig->>User: Relay ICE Candidate
+    end
+
+    rect rgb(15, 30, 35)
+        note right of User: Step 3: Direct WebRTC P2P Media Stream
+        User-->>Interviewer: Peer-to-Peer Media Connection (Audio, Video, Data Channel)
+    end
+```
+
+---
+
+## 🔌 Core Implementation Reference
+
+### 1. Backend Upgrades: WebSockets in Express
+Our Node.js Express server is upgraded to wrap the HTTP listener and attach the ultra-lightweight `ws` WebSocket library. This manages active signaling rooms and matches SDP descriptors:
+
+```typescript
+// Located inside backend/server.ts
+const wss = new WebSocketServer({ server });
+const activeRooms = new Map<string, Set<WebSocket>>();
+
+wss.on("connection", (ws) => {
+  let userRoom: string | null = null;
+  ws.on("message", (message: string) => {
+    const data = JSON.parse(message);
+    switch (data.type) {
+      case "join-room":
+        userRoom = data.roomId;
+        if (!activeRooms.has(userRoom!)) activeRooms.set(userRoom!, new Set());
+        activeRooms.get(userRoom!)?.add(ws);
+        break;
+      case "offer":
+      case "answer":
+      case "ice-candidate":
+        if (userRoom && activeRooms.has(userRoom)) {
+          activeRooms.get(userRoom)?.forEach((client) => {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+              client.send(JSON.stringify(data));
+            }
+          });
+        }
+        break;
+    }
+  });
+});
+```
+
+### 2. Frontend Integration: Custom WebRTC Hook
+A highly responsive React Hook handles camera permissions, socket states, stream binding, and lifecycle cleanups safely in the browser:
+
+```typescript
+// Located inside hooks/useWebRTC.ts
+export const useWebRTC = ({ roomId, wsUrl }: WebRTCOptions) => {
+  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
+  const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
+  const [connectionStatus, setConnectionStatus] = useState<"disconnected" | "connecting" | "connected" | "failed">("disconnected");
+  // Manage RTCPeerConnection and WebSocket events dynamically...
+};
+```
+
+---
+
 ## ✨ Key Features
 
 ### 1. 📹 Interactive Video Assessment (WebRTC)
@@ -141,6 +233,18 @@ Open a new terminal at the root directory and run:
 npm run dev
 ```
 *The client-side UI will start at [http://localhost:3000](http://localhost:3000).*
+
+---
+
+## 🔮 Gemini 2.0 Multimodal Live API (Alternative Path)
+
+> [!NOTE]  
+> If your mock interview is fully automated (not P2P between two humans), the absolute best way to utilize WebSockets is the **Gemini Multimodal Live API**.
+>
+> Instead of routing peer-to-peer through an intermediate node backend, you establish a **WebSocket connection directly from the browser to Gemini**:
+> - Send direct PCM audio chunks from the candidate microphone over WebSocket.
+> - Gemini stream-responds with PCM audio chunks immediately (voice response).
+> - Lowers latency to **< 500ms**, creating a 100% fluent, human-like voice interview by bypassing the local speech-to-text / text-to-speech engine entirely!
 
 ---
 

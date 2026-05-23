@@ -188,6 +188,15 @@ End the conversation on a polite and positive note. Thank the user for using Int
   strengths: z.array(z.string()),
   areasForImprovement: z.array(z.string()),
   finalAssessment: z.string(),
+  codeReview: z.object({
+    writtenCode: z.string(),
+    language: z.string(),
+    timeComplexity: z.string(),
+    spaceComplexity: z.string(),
+    bugsFound: z.array(z.string()),
+    critique: z.string(),
+    refactoredCode: z.string()
+  }).optional()
 });
 
 

@@ -75,6 +75,13 @@ export const VideoInterviewPanel = ({ roomId }: VideoInterviewPanelProps) => {
 
         {/* Dynamic Glowing Status Badge */}
         <div className="flex items-center gap-3 bg-dark-300 border border-dark-100 rounded-full px-4 py-2">
+          {connectionStatus === "connected" && (
+            <div className="flex items-end gap-[2px] h-2.5 px-0.5">
+              <span className="w-[1.5px] bg-emerald-400 rounded-full animate-pulse h-1" style={{ animationDelay: '0.1s', animationDuration: '0.5s' }} />
+              <span className="w-[1.5px] bg-emerald-400 rounded-full animate-pulse h-2.5" style={{ animationDelay: '0.3s', animationDuration: '0.8s' }} />
+              <span className="w-[1.5px] bg-emerald-400 rounded-full animate-pulse h-1.5" style={{ animationDelay: '0.2s', animationDuration: '0.6s' }} />
+            </div>
+          )}
           <span className={cn(
             "w-2.5 h-2.5 rounded-full transition-all duration-500 animate-pulse",
             connectionStatus === "connected" && "bg-emerald-500 shadow-[0_0_12px_#10b981]",
