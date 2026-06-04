@@ -42,7 +42,7 @@ const InterviewCard =  async ({ id, userId, role, type, techstack, createdAt}: I
     
     <div className="flex flex-row justify-between">
       <DisplayTechicons techStack={techstack} />
-      <CheckFeedbackInterviewButton hasFeedback={!!feedback} interviewId={id} />
+      <CheckFeedbackInterviewButton hasFeedback={!!feedback} interviewId={id || ''} />
 
       </div>
     </div>

@@ -142,10 +142,10 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
     return (
       <div className="flex flex-col items-center justify-center py-16 px-4 text-center min-h-[450px]">
         <div className="w-20 h-20 relative mb-8">
-          <span className="absolute inset-0 rounded-full border-4 border-emerald-500/20 animate-pulse" />
-          <span className="absolute inset-2 rounded-full border-4 border-t-emerald-500 border-r-transparent border-b-transparent border-l-transparent animate-spin" />
+          <span className="absolute inset-0 rounded-full border-4 border-pink-500/20 animate-pulse" />
+          <span className="absolute inset-2 rounded-full border-4 border-t-pink-500 border-r-transparent border-b-transparent border-l-transparent animate-spin" />
         </div>
-        <h3 className="text-xl font-semibold text-emerald-400 mb-4 animate-pulse">
+        <h3 className="text-xl font-semibold text-pink-400 mb-4 animate-pulse">
           Crafting Your Interview
         </h3>
         <div className="bg-dark-300 border border-dark-100 rounded-lg p-6 max-w-md w-full shadow-2xl glassmorphism">
@@ -154,7 +154,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
           </p>
           <div className="w-full bg-dark-400 h-1.5 rounded-full overflow-hidden mt-4">
             <div 
-              className="bg-emerald-500 h-full transition-all duration-1000 ease-out"
+              className="bg-pink-500 h-full transition-all duration-1000 ease-out"
               style={{ width: `${((loadingStep + 1) / LOADING_STEPS.length) * 100}%` }}
             />
           </div>
@@ -193,7 +193,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
                 type="text"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className="w-full bg-dark-300 border border-dark-100 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors"
+                className="w-full bg-dark-300 border border-dark-100 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-pink-500 transition-colors"
                 required
                 placeholder="e.g. Frontend Developer"
               />
@@ -208,7 +208,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
                 id="level"
                 value={level}
                 onChange={(e) => setLevel(e.target.value)}
-                className="w-full bg-dark-300 border border-dark-100 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors cursor-pointer"
+                className="w-full bg-dark-300 border border-dark-100 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-pink-500 transition-colors cursor-pointer"
               >
                 <option value="Junior">Junior (0-2 years)</option>
                 <option value="Intermediate">Intermediate (2-5 years)</option>
@@ -227,7 +227,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
                 type="text"
                 value={techStack}
                 onChange={(e) => setTechStack(e.target.value)}
-                className="w-full bg-dark-300 border border-dark-100 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors"
+                className="w-full bg-dark-300 border border-dark-100 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-pink-500 transition-colors"
                 required
                 placeholder="React, Next.js, Node.js, Tailwind CSS"
               />
@@ -245,7 +245,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
                 id="focusType"
                 value={focusType}
                 onChange={(e) => setFocusType(e.target.value)}
-                className="w-full bg-dark-300 border border-dark-100 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors cursor-pointer"
+                className="w-full bg-dark-300 border border-dark-100 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-pink-500 transition-colors cursor-pointer"
               >
                 <option value="Technical">Technical (Algorithm, API, coding knowledge)</option>
                 <option value="Behavioral">Behavioral (Situational, Soft Skills, Leadership)</option>
@@ -266,7 +266,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
                   max="10"
                   value={amount}
                   onChange={(e) => setAmount(Number(e.target.value))}
-                  className="w-full h-2 bg-dark-300 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                  className="w-full h-2 bg-dark-300 rounded-lg appearance-none cursor-pointer accent-pink-500"
                 />
                 <span className="text-white font-semibold text-sm w-6">{amount}</span>
               </div>
@@ -282,7 +282,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
                 value={profile}
                 onChange={(e) => setProfile(e.target.value)}
                 rows={4}
-                className="w-full bg-dark-300 border border-dark-100 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-emerald-500 transition-colors resize-y"
+                className="w-full bg-dark-300 border border-dark-100 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-pink-500 transition-colors resize-y"
                 placeholder="Paste relevant details about your work experience, projects, or education to get tailored, customized questions."
               />
             </div>
@@ -291,7 +291,7 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
           <div className="pt-4 flex justify-center">
             <button
               type="submit"
-              className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-black font-extrabold rounded-lg shadow-lg hover:shadow-emerald-950/20 transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+              className="px-8 py-4 bg-pink-500 hover:bg-pink-400 active:bg-pink-600 text-black font-extrabold rounded-lg shadow-lg hover:shadow-pink-950/20 transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
             >
               Generate Precision Mock Session
             </button>

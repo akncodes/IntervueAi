@@ -1,25 +1,25 @@
 export const testimonials = [
   {
     quote:
-      "Using IntervueAI was a game-changer for my job prep. The way abhi built the platform—especially the real-time voice feedback—felt like I was talking to a real interviewer. Super intuitive and helpful!",
+      "Using AeroPrep was a game-changer for my job prep. The way abhi built the platform—especially the real-time voice feedback—felt like I was talking to a real interviewer. Super intuitive and helpful!",
     name: "Anjali Mehra",
     title: "Final Year Student, BITS Pilani",
   },
   {
     quote:
-      "I was blown away by IntervueAI’s accuracy in evaluating my speech and giving relevant suggestions. Hats off to abhi for building something so futuristic yet user-friendly.",
+      "I was blown away by AeroPrep’s accuracy in evaluating my speech and giving relevant suggestions. Hats off to abhi for building something so futuristic yet user-friendly.",
     name: "Rohan Deshmukh",
     title: "Software Engineer Intern, Infosys",
   },
   {
     quote:
-      "As someone who struggles with interview anxiety, IntervueAI gave me the confidence to face real interviews. The conversational agent feels human, and abhi’s work behind this is simply brilliant.",
+      "As someone who struggles with interview anxiety, AeroPrep gave me the confidence to face real interviews. The conversational agent feels human, and abhi’s work behind this is simply brilliant.",
     name: "Priya Nair",
     title: "Graduate Trainee, Wipro",
   },
   {
     quote:
-      "Abhi’s IntervueAI is not just a mock interview tool—it's an experience. From voice transcription to feedback, everything felt polished and thoughtful. Really impressive work!",
+      "Abhi’s AeroPrep is not just a mock interview tool—it's an experience. From voice transcription to feedback, everything felt polished and thoughtful. Really impressive work!",
     name: "Arjun Sethi",
     title: "HR Associate, TCS",
   },
@@ -31,7 +31,7 @@ export const testimonials = [
   },
   {
     quote:
-      "IntervueAI helped my students gain confidence before placement season. abhi’s dedication to tech with purpose is truly inspiring. Looking forward to seeing what he builds next.",
+      "AeroPrep helped my students gain confidence before placement season. abhi’s dedication to tech with purpose is truly inspiring. Looking forward to seeing what he builds next.",
     name: "Dr. Rajeev Rangan",
     title: "Placement Officer, VJTI Mumbai",
   },

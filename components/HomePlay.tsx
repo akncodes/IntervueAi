@@ -9,18 +9,19 @@ const HomePlay = () => {
   const toggleVideo = () => {
     setShowVideo(!showVideo);
   };
-  const imageRef = useRef(null);
+  const imageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const imageElement = imageRef.current;
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
       const scrollThreshold = 100; // AFTER HOW MUCH SCROLL
 
-      if (scrollPosition > scrollThreshold) {
-        imageElement.classList.add("scrolled");
-      } else {
-        imageElement.classList.remove("scrolled");
+      if (imageRef.current) {
+        if (scrollPosition > scrollThreshold) {
+          imageRef.current.classList.add("scrolled");
+        } else {
+          imageRef.current.classList.remove("scrolled");
+        }
       }
     };
     window.addEventListener("scroll", handleScroll);

@@ -1,7 +1,7 @@
 {
-  "name": "intervueai-backend",
+  "name": "aeroprep-backend",
   "version": "1.0.0",
-  "description": "Express backend proxy for IntervueAI and n8n",
+  "description": "Express backend proxy for AeroPrep and n8n",
   "main": "dist/server.js",
   "type": "module",
   "scripts": {

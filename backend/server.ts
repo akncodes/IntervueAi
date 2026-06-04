@@ -129,6 +129,6 @@ app.post("/generate", async (req, res) => {
 
 // Listen using the combined HTTP / WebSocket server
 server.listen(PORT, () => {
-  console.log(`🚀 IntervueAI Express & WS Server listening on port ${PORT}`);
+  console.log(`🚀 AeroPrep Express & WS Server listening on port ${PORT}`);
   console.log(`🔗 Proxying generation requests to: ${N8N_WEBHOOK_URL}`);
 });

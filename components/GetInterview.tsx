@@ -188,7 +188,7 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
       `> Executing mock unit specs on solution()...`,
       `✓ Spec #1: solution() returned successful execution status.`,
       `✓ Spec #2: Boundary case verification completed.`,
-      `\n🟢 Compilation Successful!\n✓ Test Suites: 1 passed, 1 total (2.8ms)\n✓ Output: solution() executed without errors.`
+      `\n✨ Compilation Successful!\n✓ Test Suites: 1 passed, 1 total (2.8ms)\n✓ Output: solution() executed without errors.`
     ];
 
     logs.forEach((log, index) => {
@@ -263,8 +263,8 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
       {isRedirecting && (
         <div className="fixed inset-0 bg-black/85 backdrop-blur-md flex flex-col items-center justify-center z-50">
           <div className="w-16 h-16 relative mb-6">
-            <span className="absolute inset-0 rounded-full border-4 border-emerald-500/20 animate-pulse" />
-            <span className="absolute inset-2 rounded-full border-4 border-t-emerald-500 border-r-transparent border-b-transparent border-l-transparent animate-spin" />
+            <span className="absolute inset-0 rounded-full border-4 border-pink-500/20 animate-pulse" />
+            <span className="absolute inset-2 rounded-full border-4 border-t-pink-500 border-r-transparent border-b-transparent border-l-transparent animate-spin" />
           </div>
           <h3 className="text-xl font-bold text-white mb-2 animate-pulse">Grading in Progress</h3>
           <p className="text-sm text-gray-400 max-w-sm text-center">
@@ -282,7 +282,7 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
       {/* Dynamic Cockpit Session Controls */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 bg-dark-300 border border-dark-100/50 p-4 rounded-xl glassmorphism">
         <div className="flex items-center gap-3">
-          <Sparkles className="size-5 text-emerald-500 animate-pulse" />
+          <Sparkles className="size-5 text-primary-200 animate-pulse" />
           <div>
             <h4 className="text-sm font-bold text-white">Assessment Workspace Controls Center</h4>
             <p className="text-[10px] text-gray-500 font-mono">Toggle high-fidelity media widgets and code sandboxes</p>
@@ -295,7 +295,7 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
             className={cn(
               "px-3.5 py-2 text-[11px] font-bold rounded-lg border transition-all duration-200 cursor-pointer flex items-center gap-1.5",
               showVideo
-                ? "bg-emerald-950/30 text-emerald-400 border-emerald-500/30 hover:bg-emerald-900/40"
+                ? "bg-pink-950/30 text-pink-400 border-pink-500/30 hover:bg-pink-900/40"
                 : "bg-dark-200 text-gray-400 border-dark-100 hover:text-white hover:bg-dark-100"
             )}
           >
@@ -308,7 +308,7 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
             className={cn(
               "px-3.5 py-2 text-[11px] font-bold rounded-lg border transition-all duration-200 cursor-pointer flex items-center gap-1.5",
               showSandbox
-                ? "bg-emerald-950/30 text-emerald-400 border-emerald-500/30 hover:bg-emerald-900/40"
+                ? "bg-pink-950/30 text-pink-400 border-pink-500/30 hover:bg-pink-900/40"
                 : "bg-dark-200 text-gray-400 border-dark-100 hover:text-white hover:bg-dark-100"
             )}
           >
@@ -335,8 +335,8 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
           )}>
             <div className="relative w-32 h-32 mb-4">
               <span className={cn(
-                "absolute inset-0 rounded-full border-4 border-emerald-500/30 transition-all duration-300",
-                isSpeaking && "animate-ping border-emerald-500",
+                "absolute inset-0 rounded-full border-4 border-primary-200/30 transition-all duration-300",
+                isSpeaking && "animate-ping border-primary-200",
                 isRecording && "border-red-500/50 scale-105"
               )} />
               <Image 
@@ -347,7 +347,7 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
                 className="object-cover rounded-full border border-dark-100 z-10 w-full h-full relative"
               />
               {isSpeaking && (
-                <span className="absolute -bottom-1 -right-1 bg-emerald-500 p-2 rounded-full border-2 border-dark-200 text-xs animate-bounce z-20">
+                <span className="absolute -bottom-1 -right-1 bg-primary-200 p-2 rounded-full border-2 border-dark-200 text-xs animate-bounce z-20">
                   🔊
                 </span>
               )}
@@ -359,13 +359,13 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
             </div>
 
             <h3 className="text-xl font-bold text-white">Chloe</h3>
-            <p className="text-xs text-emerald-400 font-mono mb-4">AI Recruiter & Virtual Interviewer</p>
+            <p className="text-xs text-primary-100 font-mono mb-4">AI Recruiter & Virtual Interviewer</p>
             
             <div className="w-full bg-dark-300/50 rounded-lg p-4 border border-dark-100/50 text-left">
               <p className="text-xs text-gray-500 font-semibold mb-1 uppercase tracking-wider">Status</p>
               <p className="text-sm font-mono text-gray-300">
                 {isSpeaking ? (
-                  <span className="text-emerald-400">● Chloe is reading the question</span>
+                  <span className="text-primary-100">● Chloe is reading the question</span>
                 ) : isRecording ? (
                   <span className="text-red-400 animate-pulse">● Chloe is listening to your answer</span>
                 ) : (
@@ -376,7 +376,7 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
 
             <button 
               onClick={() => speakQuestion(activeQuestion)} 
-              className="mt-4 text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1 py-1 px-3 bg-dark-300 border border-dark-100 rounded-full hover:bg-dark-400 cursor-pointer"
+              className="mt-4 text-xs font-semibold text-primary-100 hover:text-primary-200 transition-colors flex items-center gap-1 py-1 px-3 bg-dark-300 border border-dark-100 rounded-full hover:bg-dark-400 cursor-pointer"
             >
               🔊 Repeat Question
             </button>
@@ -392,11 +392,11 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
             <div className="mb-6">
               <div className="flex justify-between items-center text-sm font-semibold text-gray-400 mb-2">
                 <span>Question {currentQuestionIndex + 1} of {questions.length}</span>
-                <span className="text-emerald-400 font-mono">{Math.round(progressPercent)}% Completed</span>
+                <span className="text-primary-200 font-mono">{Math.round(progressPercent)}% Completed</span>
               </div>
               <div className="w-full bg-dark-400 h-2 rounded-full overflow-hidden">
                 <div 
-                  className="bg-emerald-500 h-full transition-all duration-300 ease-out"
+                  className="bg-primary-200 h-full transition-all duration-300 ease-out"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
@@ -404,7 +404,7 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
 
             {/* Question Text */}
             <div className="mb-6 flex-grow">
-              <div className="text-xs font-semibold text-emerald-500 uppercase tracking-widest mb-2 font-mono">Question</div>
+              <div className="text-xs font-semibold text-primary-200 uppercase tracking-widest mb-2 font-mono">Question</div>
               <h4 className="text-xl font-bold text-white leading-relaxed">
                 {activeQuestion}
               </h4>
@@ -440,7 +440,7 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
                   value={activeAnswer}
                   onChange={(e) => setAnswers(prev => ({ ...prev, [currentQuestionIndex]: e.target.value }))}
                   rows={8}
-                  className="w-full bg-dark-300 border border-dark-100 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-emerald-500 transition-colors resize-y leading-relaxed"
+                  className="w-full bg-dark-300 border border-dark-100 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-primary-200 transition-colors resize-y leading-relaxed"
                   placeholder={isRecording ? "Dictating voice in real-time... Speak into your microphone." : "Write your response here. Or click 'Speak Answer' to dictate."}
                 />
                 
@@ -473,14 +473,14 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
               {isLastQuestion ? (
                 <button
                   onClick={handleSubmit}
-                  className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-black font-extrabold rounded-lg shadow-lg hover:shadow-emerald-950/20 transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 text-sm flex items-center gap-1 cursor-pointer"
+                  className="px-6 py-3 bg-primary-200 hover:bg-primary-100 active:bg-pink-600 text-white font-extrabold rounded-lg shadow-lg hover:shadow-pink-950/20 transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 text-sm flex items-center gap-1 cursor-pointer"
                 >
                   🏁 Finish & Get Feedback
                 </button>
               ) : (
                 <button
                   onClick={handleNext}
-                  className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-black font-extrabold rounded-lg hover:shadow-emerald-950/10 transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 text-sm flex items-center gap-1 cursor-pointer"
+                  className="px-6 py-2.5 bg-primary-200 hover:bg-primary-100 text-white font-extrabold rounded-lg hover:shadow-pink-950/10 transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 text-sm flex items-center gap-1 cursor-pointer"
                 >
                   Next Question →
                 </button>
@@ -492,10 +492,10 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
 
         {/* Monaco Coding Sandbox Panel (Renders on Right Hand Side when open) */}
         {showSandbox && (
-          <div className="lg:col-span-6 bg-dark-200 border border-dark-100 rounded-xl p-6 shadow-lg glassmorphism flex flex-col min-h-[520px] transition-all duration-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.04)]">
+          <div className="lg:col-span-6 bg-dark-200 border border-dark-100 rounded-xl p-6 shadow-lg glassmorphism flex flex-col min-h-[520px] transition-all duration-300 hover:shadow-[0_0_20px_rgba(236,72,153,0.04)]">
             <div className="flex justify-between items-center mb-4 border-b border-dark-100/50 pb-3">
               <div className="flex items-center gap-2">
-                <Code className="size-5 text-emerald-500" />
+                <Code className="size-5 text-primary-200" />
                 <div>
                   <h4 className="text-sm font-bold text-white">Coding Sandbox Workspace</h4>
                   <p className="text-[10px] text-gray-500 font-mono">Real-time compiler sandbox</p>
@@ -507,7 +507,7 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
                 <select
                   value={language}
                   onChange={(e) => setLanguage(e.target.value)}
-                  className="bg-dark-300 border border-dark-100/80 rounded px-2.5 py-1.5 text-xs text-white cursor-pointer focus:outline-none focus:border-emerald-500 font-semibold"
+                  className="bg-dark-300 border border-dark-100/80 rounded px-2.5 py-1.5 text-xs text-white cursor-pointer focus:outline-none focus:border-pink-500 font-semibold"
                 >
                   <option value="javascript">JavaScript</option>
                   <option value="typescript">TypeScript</option>
@@ -523,8 +523,8 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
                   className={cn(
                     "px-3 py-1.5 text-xs font-bold rounded flex items-center gap-1.5 cursor-pointer transition-all duration-200",
                     isCompiling
-                      ? "bg-emerald-950/20 text-emerald-600 border border-emerald-950/50 pointer-events-none"
-                      : "bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-black shadow-[0_0_12px_rgba(16,185,129,0.25)] hover:shadow-[0_0_16px_rgba(16,185,129,0.4)]"
+                      ? "bg-pink-950/20 text-pink-600 border border-pink-950/50 pointer-events-none"
+                      : "bg-pink-500 hover:bg-pink-400 active:bg-pink-600 text-black shadow-[0_0_12px_rgba(236,72,153,0.25)] hover:shadow-[0_0_16px_rgba(236,72,153,0.4)]"
                   )}
                 >
                   <Play className={cn("size-3", isCompiling && "animate-spin")} />
@@ -565,15 +565,15 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
                   </button>
                 </div>
                 
-                {/* Vintage Green Phosphor Scrolling Text */}
-                <div className="max-h-[140px] overflow-y-auto font-mono text-[11px] text-emerald-400/90 space-y-1 scrollbar-thin select-text">
+                {/* Vintage Cyan Phosphor Scrolling Text */}
+                <div className="max-h-[140px] overflow-y-auto font-mono text-[11px] text-cyan-400/90 space-y-1 scrollbar-thin select-text">
                   {terminalOutput.map((output, i) => (
                     <div 
                       key={i} 
                       className={cn(
                         "whitespace-pre-wrap leading-relaxed animate-fade-in",
-                        output.includes("✓") && "text-emerald-400 font-bold",
-                        output.includes("🟢") && "text-emerald-400 font-extrabold mt-1",
+                        output.includes("✓") && "text-cyan-400 font-bold",
+                        output.includes("✨") && "text-cyan-400 font-extrabold mt-1",
                         output.includes(">") && "text-gray-500"
                       )}
                     >
@@ -581,7 +581,7 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
                     </div>
                   ))}
                   {isCompiling && (
-                    <span className="inline-block w-1.5 h-3.5 bg-emerald-500 ml-1 animate-pulse" />
+                    <span className="inline-block w-1.5 h-3.5 bg-cyan-500 ml-1 animate-pulse" />
                   )}
                 </div>
               </div>
@@ -591,8 +591,8 @@ const GetInterview = ({ userName, userId, type, interviewId, questions }: GetInt
               <span className="text-[9px] font-mono text-gray-500">
                 Workspace synced automatically via secure mock pipeline
               </span>
-              <span className="text-[9px] font-bold text-emerald-400 font-mono flex items-center gap-1">
-                <span className="size-1.5 bg-emerald-500 rounded-full animate-ping" />
+              <span className="text-[9px] font-bold text-cyan-400 font-mono flex items-center gap-1">
+                <span className="size-1.5 bg-cyan-500 rounded-full animate-ping" />
                 Sandbox Connected
               </span>
             </div>

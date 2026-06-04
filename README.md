@@ -1,11 +1,11 @@
-# 🤖 IntervueAI — Precision in Recruitment
+# 🤖 AeroPrep — Precision in Recruitment
 
-![intervueai](https://github.com/user-attachments/assets/d26c8001-18ba-4777-bcd9-f80c479f3557)
+![aeroprep](https://github.com/user-attachments/assets/d26c8001-18ba-4777-bcd9-f80c479f3557)
 
 ## 🌟 Overview
-**IntervueAI** is a premium, next-generation AI-powered mock interview platform designed to help students and professionals prepare for technical and behavioral interviews in a hyper-realistic environment. 
+**AeroPrep** is a premium, next-generation AI-powered mock interview platform designed to help students and professionals prepare for technical and behavioral interviews in a hyper-realistic environment. 
 
-By eliminating static form-based templates, IntervueAI provides a **voice-first, natural interface** where candidates speak directly to Chloe, their virtual AI Recruiter. Built to replicate high-stakes corporate screening procedures, the platform generates personalized, resume-aligned questions, manages a secure live-stream peer panel using peer-to-peer WebRTC connections, and delivers comprehensive, structured evaluation reports in real-time.
+By eliminating static form-based templates, AeroPrep provides a **voice-first, natural interface** where candidates speak directly to Chloe, their virtual AI Recruiter. Built to replicate high-stakes corporate screening procedures, the platform generates personalized, resume-aligned questions, manages a secure live-stream peer panel using peer-to-peer WebRTC connections, and delivers comprehensive, structured evaluation reports in real-time.
 
 ---
 
@@ -40,7 +40,7 @@ graph TD
 In a WebRTC environment, media data flows directly between candidate and peer browsers (peer-to-peer). However, to establish this peer-to-peer channel, the participants must exchange connection metadata (SDP offers, answers, and ICE candidates) through a server. This process is called **Signaling**, and **WebSockets** are the perfect vehicle for this low-latency transaction.
 
 ### 🔄 Signaling Sequence Flow
-Below is the signaling sequence executed by IntervueAI when initiating an interactive WebRTC video session:
+Below is the signaling sequence executed by AeroPrep when initiating an interactive WebRTC video session:
 
 ```mermaid
 sequenceDiagram
@@ -218,7 +218,7 @@ N8N_WEBHOOK_URL=http://localhost:5678/webhook-test/generate-interview
 
 ### 3. Running the Project Locally
 
-To run IntervueAI, you must spin up both the Next.js frontend client and the Express signaling server.
+To run AeroPrep, you must spin up both the Next.js frontend client and the Express signaling server.
 
 #### A. Start the Backend Server (Signaling Gateway)
 ```bash

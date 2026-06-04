@@ -17,7 +17,7 @@ const Footer = () => {
 
       {/* Logo and tagline */}
       <div className="relative z-10 flex flex-col items-center text-center">
-        <Image src="/logo.svg" alt="Logo" width={35} height={35} className="sm:w-20 w-14 mb-5 " />
+        <Image src="/logo.png" alt="Logo" width={35} height={35} className="sm:w-20 w-14 mb-5 " />
         <Link href="https://github.com/akncodes/IntervueAi" >
         < Github />
         </Link>
@@ -38,7 +38,7 @@ const Footer = () => {
           <Link href="mailto:imabhishek40@gmail.com" className="hover:underline">Contact Us</Link>
         </div>
         <div>
-        {year && <>Copyright © {year} | <span className="font-semibold">IntervueAI</span></>}
+        {year && <>Copyright © {year} | <span className="font-semibold">AeroPrep</span></>}
         </div>
       </div>
     </footer>
